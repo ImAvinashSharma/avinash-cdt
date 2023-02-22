@@ -29,7 +29,7 @@ For installing aws cli follow the following article:
 
 [Installation Link](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 
-After downloading aws cli we need to configure the aws configuration. Here are a
+After downloading aws cli we need to configure the aws configuration.
 
 ```bash
 aws configure
