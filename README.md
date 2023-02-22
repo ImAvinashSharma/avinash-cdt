@@ -1,8 +1,10 @@
 # Cloud Deployment Test
 
-[S3 URL]()
+### OutPut :
 
-[EC2 IP]()
+Static website URL :: [S3 URL](http://avinash-commvault-kexfwlv.s3-website.ap-south-1.amazonaws.com/)
+
+EC2 URL (nginx) [EC2 IP](http://43.205.177.147/)
 
 ### let's first understand what is boto3
 
@@ -62,6 +64,14 @@ S3 (Simple Storage Service) is an object storage service provided by Amazon Web 
 ├── main.py
 └── upload.py         // upload file
 ```
+
+## Approach
+
+- The idea hear is that we will be creating a s3 bucket and performing a check wethers the bucket already exists or no (any ways we are creating the bucket name dynamically means a alpha numeric stings is generated to make sure the bucket name is unique).
+
+- Then we will make sure that the bucket is accessible publicly (and static hosting is enabled), and print the url of the bucket.
+
+- And then upload the content (index.html) on to the bucket.
 
 ### Create bucket (create_bucket.py)
 
@@ -125,6 +135,18 @@ Amazon Elastic Compute Cloud (Amazon EC2) is a web service provided by Amazon We
 └── vpc.py
 ```
 
+## Approach
+
+- The idea hear is that we will be creating a vpc with CidrBlock '10.0.0.0/16'.
+- Then create a subnet with CidrBlock '10.0.1.0/24' and attache it to the vpc that's created.
+- Then we create a enables instances as it allows a VPC to connect to the Internet.
+- Then we create a routetable and the need is determine where network traffic is directed.
+- Then we create a security group for our instances to control inbound and outbound traffic (virtual firewall).
+- Now, The VPC creation is completed. We need to create a ec2 instance that is public facing.
+- To do that we need AMI (Amazon Machine Image) of Ubuntu. And then run the instance. Then next step is to connect to instance and install nginx
+- To do that we need to install paramiko, to make ssh connections. and when the connection is established we run the command 'sudo apt install nginx -y'.
+- Finally, We have a ec2 public facing vm running nginx.
+
 ### Creation of VPC (vpc.py)
 
 The **create_vpc** function. And here's how it works:
@@ -157,7 +179,7 @@ The **create_ec2** function we provide security_group_id, subnet_id, and key_fil
 
 3. The public IP address is returned by the function. The public ip is used in installation of nginx via paramiko
 
-### installation of nginx via paramiko (install.py)
+### Installation of nginx via paramiko (install.py)
 
 The **create_ec2** function we provide public_ip, key_filename. And here's how it works:
 
@@ -173,4 +195,18 @@ The **create_ec2** function we provide public_ip, key_filename. And here's how i
 
 6. It closes the SSH connection.
 
+### Main (main.py)
+
 ![ec2](/img/ec2.png)
+
+## Console outputs
+
+### s3
+
+![s3](/img/s3_output.png)
+
+### EC2
+
+![ec2 1](/img/ec2_output1.png)
+![ec2 1](/img/ec2_output2.png)
+![ec2 1](/img/ec2_output3.png)
