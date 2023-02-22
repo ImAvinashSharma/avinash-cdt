@@ -2,9 +2,9 @@
 
 ### OutPut :
 
-Static website URL :: [S3 URL](http://avinash-commvault-kexfwlv.s3-website.ap-south-1.amazonaws.com/)
+Static website URL ::> [S3 URL](http://avinash-commvault-kexfwlv.s3-website.ap-south-1.amazonaws.com/)
 
-EC2 URL (nginx) [EC2 IP](http://43.205.177.147/)
+EC2 URL (nginx) ::> [EC2 IP](http://43.205.177.147/)
 
 ### let's first understand what is boto3
 
@@ -194,8 +194,6 @@ The **create_ec2** function we provide public_ip, key_filename. And here's how i
 5. It prints the output of the command to the console.
 
 6. It closes the SSH connection.
-
-### Main (main.py)
 
 ![ec2](/img/ec2.png)
 
