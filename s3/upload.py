@@ -3,10 +3,9 @@ import os
 from botocore.exceptions import ClientError
 
 
-def upload_file(file_name: str, bucketName: str, object_name=None):
+def upload_file(file_name: str, bucketName: str):
     try:
-        if object_name is None:
-            object_name = os.path.basename(file_name)
+        object_name = os.path.basename(file_name)
 
         s3_client = boto3.client('s3')
         response = s3_client.upload_file(file_name, bucketName, object_name, ExtraArgs={
