@@ -25,7 +25,7 @@ For installing aws cli follow the following article:
 
 After downloading aws cli we need to configure the aws configuration. Here are a
 
-```sh
+```bash
 aws configure
 ```
 
@@ -50,6 +50,7 @@ Hear are the digram of the aws s3 and ec2
 
 ## s3
 
+```bash
 .
 ├── access.py
 ├── assert
@@ -57,15 +58,18 @@ Hear are the digram of the aws s3 and ec2
 ├── create_bucket.py
 ├── main.py
 └── upload.py
+```
 
 ![s3](/img/s3.png)
 
 ## EC2
 
+```bash
 ├── create_key.py
 ├── install.py
 ├── instance.py
 ├── main.py
 └── vpc.py
+```
 
 ![ec2](/img/ec2.png)
