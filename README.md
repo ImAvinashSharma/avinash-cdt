@@ -1,8 +1,6 @@
 # Cloud Deployment Test
 
----
-
-### lets first understand what is boto3
+### let's first understand what is boto3
 
 - boto3 is open-source and actively maintained by Amazon Web Services.
 
@@ -45,6 +43,10 @@ There are two folder for is for setting up s3 and ec2.
 
 ---
 
-[s3 url]
-[ec2 ip]
+[s3 url]()
+[ec2 ip]()
 
+Hear are the digram of the aws s3 and ec2
+
+![s3](/img/s3.png)
+![ec2](/img/ec2.png)

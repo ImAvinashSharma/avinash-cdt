@@ -1,9 +1,10 @@
 import paramiko
+import time
 
 
 def install_nginx(public_ip, key_filename):
     print("Installing nginx...")
-
+    time.sleep(90)
     username = 'ubuntu'
 
     ssh = paramiko.SSHClient()
