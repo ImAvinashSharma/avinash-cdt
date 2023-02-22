@@ -48,5 +48,24 @@ There are two folder for is for setting up s3 and ec2.
 
 Hear are the digram of the aws s3 and ec2
 
+## s3
+
+.
+├── access.py
+├── assert
+│ └── index.html
+├── create_bucket.py
+├── main.py
+└── upload.py
+
 ![s3](/img/s3.png)
+
+## EC2
+
+├── create_key.py
+├── install.py
+├── instance.py
+├── main.py
+└── vpc.py
+
 ![ec2](/img/ec2.png)
