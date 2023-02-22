@@ -1,12 +1,16 @@
 # Cloud Deployment Test
 
+[S3 URL]()
+
+[EC2 IP]()
+
 ### let's first understand what is boto3
 
 - boto3 is open-source and actively maintained by Amazon Web Services.
 
-- boto3 is a Python library that provides a simple, yet powerful interface for interacting with Amazon Web Services APIs. It is one of the most popular libraries for working with AWS services apart from terraform and ansible.
+- boto3 is a Python library that provides a simple, yet powerful interface for interacting with Amazon Web Services APIs.
 
-- With boto3, you can write Python code to programmatically interact with various AWS services, such as Amazon S3, Amazon EC2, Amazon RDS, and many others. boto3 can be used to perform various tasks, such as creating, deleting, or modifying AWS resources, fetching metadata about your AWS resources, and working with data stored in AWS.
+- With boto3, you can write Python code to programmatically interact with various AWS services, such as Amazon S3, Amazon EC2, Amazon RDS, and many others. boto3 can be used to perform various tasks, such as creating, deleting, or modifying AWS resources, fetching metadata about your AWS resources.
 
 ## Prerequisites
 
@@ -43,9 +47,6 @@ There are two folder for is for setting up s3 and ec2.
 
 ---
 
-[s3 url]()
-[ec2 ip]()
-
 Hear are the digram of the aws s3 and ec2
 
 ## s3
@@ -54,12 +55,12 @@ S3 (Simple Storage Service) is an object storage service provided by Amazon Web 
 
 ```bash
 .
-├── access.py
+├── access.py         // to give public access to bucket
 ├── assert
-│   └── index.html
-├── create_bucket.py
+│   └── index.html    // hello world
+├── create_bucket.py  // bucket creation
 ├── main.py
-└── upload.py
+└── upload.py         // upload file
 ```
 
 ### Create bucket (create_bucket.py)
@@ -123,5 +124,53 @@ Amazon Elastic Compute Cloud (Amazon EC2) is a web service provided by Amazon We
 ├── main.py
 └── vpc.py
 ```
+
+### Creation of VPC (vpc.py)
+
+The **create_vpc** function. And here's how it works:
+
+1. The function uses the _create_vpc()_ function to create a VPC with CIDR block 10.0.0.0/16.
+
+2. Then it creates an internet gateway, attaches it to the VPC, and creates a subnet with CIDR block 10.0.1.0/24 in availability zone ap-south-1a.
+
+3. Then it creates a route table and associates it with the subnet, adds a route to the internet gateway, and creates a security group with name my-security-group.
+
+4. It authorizes inbound traffic to the security group on ports 22 and 80 from all IP addresses.
+
+5. function returns the security group ID and subnet ID.
+
+### Creation of key pair (create_key.py)
+
+The **create_keypair** function we provide key_pair_name. And here's how it works:
+
+1. The _create_keypair()_ function takes a key_pair_name, which specifies the name of the key pair. The function then create the key pair. The private key is then written to a file with the same name as the key pair name and the .pem extension. The file is given read-only permission with chmod() method.
+
+2. If there is an error during creation of key pair,such as the specified key pair is already exists or the AWS account lacking the necessary permissions, the function catches the ClientError exception and prints an error message.
+
+### Creation of ec2 instance (instance.py)
+
+The **create_ec2** function we provide security_group_id, subnet_id, and key_filename. And here's how it works:
+
+1. The function uses the boto3 ec2 client to create the EC2 instance using the _run_instances()_ method. The method takes the AMI ID, the instance type, the number of instances, the security group ID, the subnet ID, and the key pair name.
+
+2. The code then waits for the instance to become available using the _get_waiter()_ method with the 'instance_running' parameter. Once the instance is available, the code uses the describe_instances() method to retrieve the public IP address of the instance.
+
+3. The public IP address is returned by the function. The public ip is used in installation of nginx via paramiko
+
+### installation of nginx via paramiko (install.py)
+
+The **create_ec2** function we provide public_ip, key_filename. And here's how it works:
+
+1. The function waits for 90 seconds to make sure that the EC2 instance is fully initialized and ready to accept SSH connections.
+
+2. Then initializes ssh with _paramiko.SSHClient()_
+
+3. It establishes an SSH connection to the EC2 instance using paramiko (ssh.connect).
+
+4. It runs the **sudo apt install nginx -y** command on the EC2 instance using the SSH connection (ssh.exec_command).
+
+5. It prints the output of the command to the console.
+
+6. It closes the SSH connection.
 
 ![ec2](/img/ec2.png)

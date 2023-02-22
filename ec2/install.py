@@ -3,19 +3,22 @@ import time
 
 
 def install_nginx(public_ip, key_filename):
-    print("Installing nginx...")
-    time.sleep(90)
-    username = 'ubuntu'
+    try:
+        print("Installing nginx...")
+        time.sleep(90)
+        username = 'ubuntu'
 
-    ssh = paramiko.SSHClient()
-    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-    ssh.connect(hostname=public_ip, username=username,
-                key_filename=key_filename)
+        ssh.connect(hostname=public_ip, username=username,
+                    key_filename=key_filename)
 
-    stdin, stdout, stderr = ssh.exec_command('sudo apt install nginx -y')
+        stdin, stdout, stderr = ssh.exec_command('sudo apt install nginx -y')
 
-    for line in stdout.readlines():
-        print(line, end="")
+        for line in stdout.readlines():
+            print(line, end="")
 
-    ssh.close()
+        ssh.close()
+    except:
+        print("error occurred during installation of nginx")

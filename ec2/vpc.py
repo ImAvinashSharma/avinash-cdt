@@ -1,94 +1,99 @@
 import boto3
+from botocore.exceptions import ClientError
 
 
 def create_vpc():
-    ec2_client = boto3.client('ec2')
+    try:
 
-    vpc_response = ec2_client.create_vpc(
-        CidrBlock='10.0.0.0/16'
-    )
-    vpc_id = vpc_response['Vpc']['VpcId']
+        ec2_client = boto3.client('ec2')
 
-    ec2_client.modify_vpc_attribute(
-        EnableDnsSupport={'Value': True},
-        VpcId=vpc_id
-    )
+        vpc_response = ec2_client.create_vpc(
+            CidrBlock='10.0.0.0/16'
+        )
+        vpc_id = vpc_response['Vpc']['VpcId']
 
-    ec2_client.modify_vpc_attribute(
-        EnableDnsHostnames={'Value': True},
-        VpcId=vpc_id
-    )
+        ec2_client.modify_vpc_attribute(
+            EnableDnsSupport={'Value': True},
+            VpcId=vpc_id
+        )
 
-    ec2_client.modify_vpc_attribute(
-        EnableNetworkAddressUsageMetrics={'Value': True},
-        VpcId=vpc_id
-    )
+        ec2_client.modify_vpc_attribute(
+            EnableDnsHostnames={'Value': True},
+            VpcId=vpc_id
+        )
 
-    print("VPC Created")
+        ec2_client.modify_vpc_attribute(
+            EnableNetworkAddressUsageMetrics={'Value': True},
+            VpcId=vpc_id
+        )
 
-    internet_gateway_response = ec2_client.create_internet_gateway()
-    internet_gateway_id = internet_gateway_response['InternetGateway']['InternetGatewayId']
-    ec2_client.attach_internet_gateway(
-        VpcId=vpc_id, InternetGatewayId=internet_gateway_id)
+        print("VPC Created")
 
-    print("Gateway Created")
+        internet_gateway_response = ec2_client.create_internet_gateway()
+        internet_gateway_id = internet_gateway_response['InternetGateway']['InternetGatewayId']
+        ec2_client.attach_internet_gateway(
+            VpcId=vpc_id, InternetGatewayId=internet_gateway_id)
 
-    subnet_response = ec2_client.create_subnet(
-        CidrBlock='10.0.1.0/24',
-        VpcId=vpc_id,
-        AvailabilityZone='ap-south-1a'
-    )
+        print("Gateway Created")
 
-    subnet_id = subnet_response['Subnet']['SubnetId']
+        subnet_response = ec2_client.create_subnet(
+            CidrBlock='10.0.1.0/24',
+            VpcId=vpc_id,
+            AvailabilityZone='ap-south-1a'
+        )
 
-    ec2_client.modify_subnet_attribute(
-        SubnetId=subnet_id,
-        MapPublicIpOnLaunch={'Value': True},
-    )
+        subnet_id = subnet_response['Subnet']['SubnetId']
 
-    print("Subnet Created")
+        ec2_client.modify_subnet_attribute(
+            SubnetId=subnet_id,
+            MapPublicIpOnLaunch={'Value': True},
+        )
 
-    route_table_response = ec2_client.create_route_table(VpcId=vpc_id)
-    route_table_id = route_table_response['RouteTable']['RouteTableId']
+        print("Subnet Created")
 
-    ec2_client.associate_route_table(
-        RouteTableId=route_table_id, SubnetId=subnet_id)
+        route_table_response = ec2_client.create_route_table(VpcId=vpc_id)
+        route_table_id = route_table_response['RouteTable']['RouteTableId']
 
-    ec2_client.create_route(
-        RouteTableId=route_table_id,
-        DestinationCidrBlock='0.0.0.0/0',
-        GatewayId=internet_gateway_id
-    )
+        ec2_client.associate_route_table(
+            RouteTableId=route_table_id, SubnetId=subnet_id)
 
-    print("Route Table Created")
+        ec2_client.create_route(
+            RouteTableId=route_table_id,
+            DestinationCidrBlock='0.0.0.0/0',
+            GatewayId=internet_gateway_id
+        )
 
-    security_group_response = ec2_client.create_security_group(
-        GroupName='my-security-group',
-        Description='My security group',
-        VpcId=vpc_id
-    )
-    security_group_id = security_group_response['GroupId']
+        print("Route Table Created")
 
-    print("Security Group Created")
+        security_group_response = ec2_client.create_security_group(
+            GroupName='my-security-group',
+            Description='My security group',
+            VpcId=vpc_id
+        )
+        security_group_id = security_group_response['GroupId']
 
-    ec2_client.authorize_security_group_ingress(
-        GroupId=security_group_id,
-        IpPermissions=[
-            {
-                'IpProtocol': 'tcp',
-                'FromPort': 22,
-                'ToPort': 22,
-                'IpRanges': [{'CidrIp': '0.0.0.0/0'}]
-            },
-            {
-                'IpProtocol': 'tcp',
-                'FromPort': 80,
-                'ToPort': 80,
-                'IpRanges': [{'CidrIp': '0.0.0.0/0'}]
-            }
-        ]
-    )
+        print("Security Group Created")
 
-    print("Ingress added for port 80 and 22")
+        ec2_client.authorize_security_group_ingress(
+            GroupId=security_group_id,
+            IpPermissions=[
+                {
+                    'IpProtocol': 'tcp',
+                    'FromPort': 22,
+                    'ToPort': 22,
+                    'IpRanges': [{'CidrIp': '0.0.0.0/0'}]
+                },
+                {
+                    'IpProtocol': 'tcp',
+                    'FromPort': 80,
+                    'ToPort': 80,
+                    'IpRanges': [{'CidrIp': '0.0.0.0/0'}]
+                }
+            ]
+        )
 
-    return security_group_id, subnet_id
+        print("Ingress added for port 80 and 22")
+
+        return security_group_id, subnet_id
+    except ClientError as e:
+        print("error occurred while VPC creation : % s" % e)
