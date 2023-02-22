@@ -49,8 +49,6 @@ There are two folder for is for setting up s3 and ec2.
 
 ---
 
-Hear are the digram of the aws s3 and ec2
-
 ## s3
 
 S3 (Simple Storage Service) is an object storage service provided by Amazon Web Services (AWS).
