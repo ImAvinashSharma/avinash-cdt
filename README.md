@@ -65,7 +65,7 @@ S3 (Simple Storage Service) is an object storage service provided by Amazon Web 
 
 ## Approach
 
-- The idea hear is that we will be creating a s3 bucket and performing a check wethers the bucket already exists or no (any ways we are creating the bucket name dynamically means a alpha numeric stings is generated to make sure the bucket name is unique).
+- The idea hear is that we will be creating a s3 bucket and performing a check whether the bucket already exists or no (any ways we are creating the bucket name dynamically means a alpha numeric stings is generated to make sure the bucket name is unique).
 
 - Then we will make sure that the bucket is accessible publicly (and static hosting is enabled), and print the url of the bucket.
 
