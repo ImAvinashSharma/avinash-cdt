@@ -1,12 +1,9 @@
 import paramiko
 
 
-def install_nginx(instance):
-    public_ip = instance.public_ip_address
+def install_nginx(public_ip, key_filename):
+    print("Installing nginx...")
 
-    print(f"The public IP address of instance {instance_id} is {public_ip}")
-
-    key_filename = 'avi_test.pem'
     username = 'ubuntu'
 
     ssh = paramiko.SSHClient()

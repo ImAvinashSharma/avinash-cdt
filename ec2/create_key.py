@@ -2,10 +2,8 @@ import boto3
 import os
 
 
-def create_keypair():
+def create_keypair(key_pair_name):
     ec2 = boto3.client('ec2')
-
-    key_pair_name = "avi_test"
 
     response = ec2.create_key_pair(KeyName=key_pair_name)
 
