@@ -137,7 +137,7 @@ Amazon Elastic Compute Cloud (Amazon EC2) is a web service provided by Amazon We
 
 - The idea hear is that we will be creating a vpc with CidrBlock '10.0.0.0/16'.
 - Then create a subnet with CidrBlock '10.0.1.0/24' and attach it to the vpc that's created.
-- Then we create a enables instances as it allows a VPC to connect to the Internet.
+- Then we create a internet gateway that enables instances as it allows a VPC to connect to the Internet.
 - Then we create a routetable and the need is determine where network traffic is directed.
 - Then we create a security group for our instances to control inbound and outbound traffic (virtual firewall).
 - Now, The VPC creation is completed. We need to create a ec2 instance that is public facing.
