@@ -45,7 +45,7 @@ Default output format : <json>
 ```
 
 File directory structure:
-There are two folder for is for setting up s3 and ec2.
+There are two folders for setting up s3 and ec2.
 
 ---
 
